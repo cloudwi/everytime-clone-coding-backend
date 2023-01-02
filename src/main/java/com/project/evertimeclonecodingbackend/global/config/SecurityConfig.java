@@ -16,7 +16,8 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 // https://github.com/spring-projects/spring-boot/issues/11926
-                .requestMatchers(PathRequest.toH2Console());
+                .requestMatchers("/**");
+//                .requestMatchers(PathRequest.toH2Console());
     }
 
     @Bean
