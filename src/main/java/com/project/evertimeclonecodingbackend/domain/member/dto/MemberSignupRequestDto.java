@@ -2,31 +2,25 @@ package com.project.evertimeclonecodingbackend.domain.member.dto;
 
 public class MemberSignupRequestDto {
 
-    private String email;
+    private String id;
     private String password;
-    private String name;
+    private String nickname;
 
-    public String getEmail() {
-        return email;
+    public MemberSignupRequestDto(String id, String password, String nickname) {
+        this.id = id;
+        this.password = password;
+        this.nickname = nickname;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public String getNickname() {
+        return nickname;
     }
 }

@@ -1,6 +1,7 @@
 package com.project.evertimeclonecodingbackend.domain.member.controller;
 
 import com.project.evertimeclonecodingbackend.domain.member.dto.JwtRequestDto;
+import com.project.evertimeclonecodingbackend.domain.member.dto.JwtResponseDto;
 import com.project.evertimeclonecodingbackend.domain.member.dto.MemberSignupRequestDto;
 import com.project.evertimeclonecodingbackend.domain.member.service.AuthService;
 import org.springframework.http.MediaType;
@@ -19,13 +20,17 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String login(@RequestBody JwtRequestDto request) {
-        return "login";
-    }
-
     @PostMapping(value = "signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public String signup(@RequestBody MemberSignupRequestDto request) {
         return authService.signup(request);
+    }
+
+    @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public JwtResponseDto login(@RequestBody JwtRequestDto jwtRequestDto) {
+        try {
+            return authService.login(jwtRequestDto);
+        } catch (Exception e) {
+            return new JwtResponseDto(e.getMessage());
+        }
     }
 }
