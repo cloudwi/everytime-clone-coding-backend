@@ -29,11 +29,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
 
-
-    public Member() {
-
-    }
-
     public Member(String id, String password, String nickname, int admissionId, School school, Role role) {
         this.id = id;
         this.password = password;
