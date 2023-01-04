@@ -1,17 +1,19 @@
 package com.project.evertimeclonecodingbackend.domain.board.dto;
 
-public class BoardSaveRequestDto {
+public class PostSaveRequestDto {
 
     private String title;
     private String content;
+    private String category;
 
-    public BoardSaveRequestDto() {
+    public PostSaveRequestDto() {
 
     }
 
-    public BoardSaveRequestDto(String title, String content) {
+    public PostSaveRequestDto(String title, String content, String category) {
         this.title = title;
         this.content = content;
+        this.category = category;
     }
 
     public String getTitle() {
@@ -20,5 +22,9 @@ public class BoardSaveRequestDto {
 
     public String getContent() {
         return this.content;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }
