@@ -1,8 +1,8 @@
-package com.project.evertimeclonecodingbackend.domain.board.controller;
+package com.project.evertimeclonecodingbackend.domain.post.controller;
 
-import com.project.evertimeclonecodingbackend.domain.board.dto.PostSaveRequestDto;
-import com.project.evertimeclonecodingbackend.domain.board.dto.PostFindPageResponseDto;
-import com.project.evertimeclonecodingbackend.domain.board.service.PostService;
+import com.project.evertimeclonecodingbackend.domain.post.dto.PostSaveRequestDto;
+import com.project.evertimeclonecodingbackend.domain.post.dto.PostFindPageResponseDto;
+import com.project.evertimeclonecodingbackend.domain.post.service.PostService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

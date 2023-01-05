@@ -1,6 +1,7 @@
 package com.project.evertimeclonecodingbackend.domain.member.entity;
 
-import com.project.evertimeclonecodingbackend.domain.board.entity.Post;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
+import com.project.evertimeclonecodingbackend.domain.comment.entity.Comment;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -28,6 +29,12 @@ public class Member {
     //연관관계
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
+
+    public Member() {
+    }
 
     public Member(String id, String password, String nickname, int admissionId, School school, Role role) {
         this.id = id;
@@ -70,10 +77,21 @@ public class Member {
         return posts;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     public void addPost(Post post) {
         this.posts.add(post);
         if (post.getMember() != null) {
             post.setMember(this);
+        }
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        if (comment.getMember() != null) {
+            comment.setMember(this);
         }
     }
 }

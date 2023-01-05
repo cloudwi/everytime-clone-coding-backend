@@ -1,6 +1,6 @@
 package com.project.evertimeclonecodingbackend.domain.comment.dto;
 
-import com.project.evertimeclonecodingbackend.domain.board.entity.Post;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
 import com.project.evertimeclonecodingbackend.domain.member.entity.Member;
 
 public class CommentSaveDto {

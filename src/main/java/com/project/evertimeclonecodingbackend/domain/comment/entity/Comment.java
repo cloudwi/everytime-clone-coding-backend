@@ -1,6 +1,6 @@
 package com.project.evertimeclonecodingbackend.domain.comment.entity;
 
-import com.project.evertimeclonecodingbackend.domain.board.entity.Post;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
 import com.project.evertimeclonecodingbackend.domain.member.entity.Member;
 
 import jakarta.persistence.*;
@@ -14,19 +14,43 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    //연관관계
     @JoinColumn(name ="member_id")
     @ManyToOne
     private Member member;
 
-    @JoinColumn(name ="post_id")
+    @JoinColumn(name = "post_id")
     @ManyToOne
     private Post post;
 
-    public Comment(String content) { this.content = content; }
+    public Comment() {
+    }
 
-    public long getId() { return this.id; }
+    public Comment(String content) {
+        this.content = content;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
 
     public Member getMember() {
-        return this.member;
+        return member;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setMember(Member member) {
+        if (this.member != null) {
+            this.member.getComments().remove(this);
+        }
+        this.member = member;
+        member.getComments().add(this);
     }
 }

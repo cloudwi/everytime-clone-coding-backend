@@ -1,9 +1,7 @@
 package com.project.evertimeclonecodingbackend.domain.comment.service;
 
-import com.project.evertimeclonecodingbackend.domain.board.entity.Post;
 import com.project.evertimeclonecodingbackend.domain.comment.entity.Comment;
 import com.project.evertimeclonecodingbackend.domain.comment.repository.CommentRepository;
-import com.project.evertimeclonecodingbackend.domain.member.entity.Member;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

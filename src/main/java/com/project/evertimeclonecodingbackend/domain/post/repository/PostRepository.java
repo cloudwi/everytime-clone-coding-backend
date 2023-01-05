@@ -1,7 +1,7 @@
-package com.project.evertimeclonecodingbackend.domain.board.repository;
+package com.project.evertimeclonecodingbackend.domain.post.repository;
 
-import com.project.evertimeclonecodingbackend.domain.board.entity.Category;
-import com.project.evertimeclonecodingbackend.domain.board.entity.Post;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Category;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.project.evertimeclonecodingbackend.domain.board.dto;
+package com.project.evertimeclonecodingbackend.domain.post.dto;
 
 public class PostSaveRequestDto {
 

@@ -1,16 +1,12 @@
-package com.project.evertimeclonecodingbackend.domain.board.service;
+package com.project.evertimeclonecodingbackend.domain.post.service;
 
-import com.project.evertimeclonecodingbackend.domain.board.dto.PostFindPageResponseDto;
-import com.project.evertimeclonecodingbackend.domain.board.entity.Category;
-import com.project.evertimeclonecodingbackend.domain.board.entity.Post;
-import com.project.evertimeclonecodingbackend.domain.board.repository.PostRepository;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Category;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
+import com.project.evertimeclonecodingbackend.domain.post.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

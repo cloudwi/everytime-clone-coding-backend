@@ -1,4 +1,4 @@
-package com.project.evertimeclonecodingbackend.domain.board.entity;
+package com.project.evertimeclonecodingbackend.domain.post.entity;
 
 import com.project.evertimeclonecodingbackend.domain.member.entity.Member;
 import com.project.evertimeclonecodingbackend.global.entity.BaseTimeEntity;

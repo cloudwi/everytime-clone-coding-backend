@@ -1,8 +1,8 @@
-package com.project.evertimeclonecodingbackend.domain.board.service;
+package com.project.evertimeclonecodingbackend.domain.post.service;
 
-import com.project.evertimeclonecodingbackend.domain.board.dto.PostSaveRequestDto;
-import com.project.evertimeclonecodingbackend.domain.board.entity.Category;
-import com.project.evertimeclonecodingbackend.domain.board.entity.Post;
+import com.project.evertimeclonecodingbackend.domain.post.dto.PostSaveRequestDto;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Category;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
