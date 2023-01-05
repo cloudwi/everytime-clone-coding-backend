@@ -1,6 +1,8 @@
 package com.project.evertimeclonecodingbackend.domain.post.controller;
 
 import com.project.evertimeclonecodingbackend.domain.post.dto.*;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Category;
+import com.project.evertimeclonecodingbackend.domain.post.entity.Tag;
 import com.project.evertimeclonecodingbackend.domain.post.service.PostService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +50,7 @@ public class PostController {
         List<PostFindByKeywordResponseDto> postFindByKeywordResponseDtos = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(postSearchRequestDto.getPage(), 20);
 
-        postService.search(postSearchRequestDto.getCategory(), postSearchRequestDto.getTag(), postSearchRequestDto.getKeyword(), pageRequest).forEach(post -> {
+        postService.search(Category.valueOf(postSearchRequestDto.getCategory()), Tag.valueOf(postSearchRequestDto.getTag()), postSearchRequestDto.getKeyword(), pageRequest).forEach(post -> {
                             PostFindByKeywordResponseDto postFindByKeywordResponseDto = new PostFindByKeywordResponseDto(
                                     post.getId(),
                                     post.getTitle(),

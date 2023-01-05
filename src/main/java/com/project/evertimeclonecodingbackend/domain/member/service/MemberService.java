@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 public class MemberService {
@@ -34,14 +36,14 @@ public class MemberService {
 
     @Transactional
     public String signup(MemberSignupRequestDto request) {
-        boolean existMember = memberRepository.existsById(request.getId());
+        Optional<Member> optionalMember = memberRepository.findByUserId(request.getuserId());
 
-        if (existMember) {
+        if (!optionalMember.isEmpty()) {
             throw new IllegalArgumentException("중복된 아이디 입니다.");
         }
 
         Member member = new Member(
-                request.getId(),
+                request.getuserId(),
                 request.getPassword(),
                 request.getNickname(),
                 request.getAdmissionId(),

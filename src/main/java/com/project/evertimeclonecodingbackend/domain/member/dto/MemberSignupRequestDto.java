@@ -4,7 +4,7 @@ import com.project.evertimeclonecodingbackend.domain.member.entity.School;
 
 public class MemberSignupRequestDto {
 
-    private String id;
+    private String userId;
     private String password;
     private String nickname;
     private String name;
@@ -12,8 +12,8 @@ public class MemberSignupRequestDto {
     private int admissionId;
 
 
-    public MemberSignupRequestDto(String id, String password, String nickname, String name, String  school, int admissionId) {
-        this.id = id;
+    public MemberSignupRequestDto(String userId, String password, String nickname, String name, String  school, int admissionId) {
+        this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.name = name;
@@ -25,8 +25,8 @@ public class MemberSignupRequestDto {
         return password;
     }
 
-    public String getId() {
-        return id;
+    public String getuserId() {
+        return userId;
     }
 
     public String getNickname() {

@@ -29,9 +29,9 @@ public class PostService {
         return postRepository.findAllByCategory(Category.valueOf(category), pageRequest);
     }
 
-    public Page<Post> search(String category, String tag, String keyword, PageRequest pageRequest) {
-        return switch (Tag.valueOf(tag)) {
-            case All -> postRepository.findAllByCategoryAndTitleAndContentContaining(category, keyword, pageRequest);
+    public Page<Post> search(Category category, Tag tag, String keyword, PageRequest pageRequest) {
+        return switch (tag) {
+            case All -> postRepository.findAllByCategoryAndAllText(category, keyword, pageRequest);
             case TITLE -> postRepository.findAllByCategoryAndTitleContaining(category, keyword, pageRequest);
             case CONTENT -> postRepository.findAllByCategoryAndContentContaining(category, keyword, pageRequest);
         };
