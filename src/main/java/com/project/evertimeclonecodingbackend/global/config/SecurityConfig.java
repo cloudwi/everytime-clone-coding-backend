@@ -33,8 +33,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console())
-                .requestMatchers("/**");
+                .requestMatchers(PathRequest.toH2Console());
     }
 
     @Bean
@@ -43,8 +42,9 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers("/api/v1/member/login/**").permitAll()
+                .requestMatchers("/api/v1/member/signup/**").permitAll()
+                .requestMatchers("/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

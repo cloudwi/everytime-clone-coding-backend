@@ -24,7 +24,7 @@ public class MemberController {
         this.emailService = emailService;
     }
 
-    @PostMapping()
+    @PostMapping("/signup")
     public String signup(@RequestBody MemberSignupRequestDto request) {
         return memberService.signup(request);
     }

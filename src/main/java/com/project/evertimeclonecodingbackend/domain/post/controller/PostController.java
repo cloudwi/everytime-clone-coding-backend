@@ -1,7 +1,6 @@
 package com.project.evertimeclonecodingbackend.domain.post.controller;
 
-import com.project.evertimeclonecodingbackend.domain.post.dto.PostSaveRequestDto;
-import com.project.evertimeclonecodingbackend.domain.post.dto.PostFindPageResponseDto;
+import com.project.evertimeclonecodingbackend.domain.post.dto.*;
 import com.project.evertimeclonecodingbackend.domain.post.service.PostService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +21,42 @@ public class PostController {
 
     @PostMapping()
     public long save(@RequestBody PostSaveRequestDto postSaveRequestDto) {
-        return postService.save(postSaveRequestDto.getTitle(), postSaveRequestDto.getContent(), postSaveRequestDto.getCategory());
+        return postService.save(postSaveRequestDto.getTitle(), postSaveRequestDto.getContent(), postSaveRequestDto.getCategory(), postSaveRequestDto.isAnonymous());
     }
 
-    @GetMapping("/{category}/{page}")
-    public ResponseEntity<List<PostFindPageResponseDto>> findPage(@PathVariable String category, @PathVariable int page) {
-        List<PostFindPageResponseDto> postFindPageResponseDtos = new ArrayList<>();
-        PageRequest pageRequest = PageRequest.of(page, 20);
-        postService.findPage(category, pageRequest).forEach(post -> {
-            PostFindPageResponseDto postFindPageResponseDto = new PostFindPageResponseDto(
+    @GetMapping()
+    public ResponseEntity<List<PostFindAllByCategoryResponseDto>> findAllByCategory(@RequestBody PostFindAllByCategoryRequestDto postFindAllByCategoryRequestDto) {
+        List<PostFindAllByCategoryResponseDto> postFindPageResponseDtos = new ArrayList<>();
+        PageRequest pageRequest = PageRequest.of(postFindAllByCategoryRequestDto.getPage(), 20);
 
+        postService.findAllByCategory(postFindAllByCategoryRequestDto.getCategory(), pageRequest).forEach(post -> {
+            PostFindAllByCategoryResponseDto postFindPageResponseDto = new PostFindAllByCategoryResponseDto(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getContent(),
+                    post.isAnonymous() ? "익명" : post.getMember().getNickname(),
+                    post.getCreateTime()
             );
 
             postFindPageResponseDtos.add(postFindPageResponseDto);
         });
         return ResponseEntity.ok(postFindPageResponseDtos);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PostFindByKeywordResponsDto>> search(@RequestBody PostSearchRequestDto postSearchRequestDto) {
+        List<PostFindByKeywordResponsDto> postFindByKeywordResponsDtos = new ArrayList<>();
+        PageRequest pageRequest = PageRequest.of(postSearchRequestDto.getPage(), 20);
+
+        postService.search(postSearchRequestDto.getCategory(), postSearchRequestDto.getTag(), postSearchRequestDto.getKeyword(), pageRequest).forEach(post -> {
+                            PostFindByKeywordResponsDto postFindByKeywordResponsDto = new PostFindByKeywordResponsDto(
+                                    post.getId(),
+                                    post.getTitle(),
+                                    post.getContent()
+                            );
+
+            postFindByKeywordResponsDtos.add(postFindByKeywordResponsDto);
+        });
+        return ResponseEntity.ok(postFindByKeywordResponsDtos);
     }
 }

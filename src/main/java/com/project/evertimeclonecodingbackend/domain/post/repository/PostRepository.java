@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByCategory(Category category, PageRequest pageRequest);
+
+    Page<Post> findAllByCategoryAndTitleContaining(String category, int keyword, PageRequest pageRequest);
 }

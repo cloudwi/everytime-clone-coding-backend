@@ -1,8 +1,7 @@
 package com.project.evertimeclonecodingbackend.domain.comment.entity;
 
-import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
 import com.project.evertimeclonecodingbackend.domain.member.entity.Member;
-
+import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
 import jakarta.persistence.*;
 
 @Entity
@@ -52,5 +51,13 @@ public class Comment {
         }
         this.member = member;
         member.getComments().add(this);
+    }
+
+    public void setPost(Post post) {
+        if (this.post != null) {
+            this.post.getComments().remove(this);
+        }
+        this.post = post;
+        post.getComments().add(this);
     }
 }
