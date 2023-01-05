@@ -19,6 +19,8 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     @Lob
     private String content;
+    @Column
+    private String titleAndContent;
     @Column(nullable = false)
     private Category category;
 
@@ -50,6 +52,8 @@ public class Post extends BaseTimeEntity {
     public String getContent() {
         return this.content;
     }
+
+    public String getTitleAndContent() { return this.title + this.content; }
 
     public long getId() {
         return this.id;

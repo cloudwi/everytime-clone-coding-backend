@@ -31,10 +31,9 @@ public class PostService {
 
     public Page<Post> search(String category, String tag, String keyword, PageRequest pageRequest) {
         return switch (Tag.valueOf(tag)) {
-            case All -> null;
-            case CONTENT -> null;
-            case TITLE -> null;
+            case All -> postRepository.findAllByCategoryAndTitleAndContentContaining(category, keyword, pageRequest);
+            case TITLE -> postRepository.findAllByCategoryAndTitleContaining(category, keyword, pageRequest);
+            case CONTENT -> postRepository.findAllByCategoryAndContentContaining(category, keyword, pageRequest);
         };
-//        postRepository.findAllByCategoryAndTitleContaining(category, keyword, pageRequest);
     }
 }

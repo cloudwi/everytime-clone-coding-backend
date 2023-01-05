@@ -45,7 +45,7 @@ public class PostController {
 
     @GetMapping("/search")
     public ResponseEntity<List<PostFindByKeywordResponseDto>> search(@RequestBody PostSearchRequestDto postSearchRequestDto) {
-        List<PostFindByKeywordResponseDto> postFindByKeywordResponseDos = new ArrayList<>();
+        List<PostFindByKeywordResponseDto> postFindByKeywordResponseDtos = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(postSearchRequestDto.getPage(), 20);
 
         postService.search(postSearchRequestDto.getCategory(), postSearchRequestDto.getTag(), postSearchRequestDto.getKeyword(), pageRequest).forEach(post -> {
@@ -55,8 +55,8 @@ public class PostController {
                                     post.getContent()
                             );
 
-            postFindByKeywordResponseDos.add(postFindByKeywordResponseDto);
+            postFindByKeywordResponseDtos.add(postFindByKeywordResponseDto);
         });
-        return ResponseEntity.ok(postFindByKeywordResponseDos);
+        return ResponseEntity.ok(postFindByKeywordResponseDtos);
     }
 }
