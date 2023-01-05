@@ -55,9 +55,9 @@ public class JwtTokenProvider {
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
+                .setHeaderParam("Token", "JWT")
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(String.valueOf(subject))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenValidTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, secretKey)

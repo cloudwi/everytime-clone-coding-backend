@@ -12,7 +12,10 @@ import java.util.List;
 public class Member {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @Column(unique = true, nullable = false)
+    private String userId;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false, unique = true)
@@ -36,8 +39,8 @@ public class Member {
     public Member() {
     }
 
-    public Member(String id, String password, String nickname, int admissionId, School school, Role role) {
-        this.id = id;
+    public Member(String userId, String password, String nickname, int admissionId, School school, Role role) {
+        this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.admissionId = admissionId;
@@ -49,8 +52,12 @@ public class Member {
         password = passwordEncoder.encode(password);
     }
 
-    public String getId() {
+    public long getId() {
         return id;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getPassword() {

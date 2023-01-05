@@ -50,7 +50,7 @@ public class MemberService {
         member.encryptPassword(passwordEncoder);
 
         memberRepository.save(member);
-        return member.getId();
+        return member.getUserId();
     }
 
     public JwtResponseDto login(JwtRequestDto jwtRequestDto) throws Exception {
