@@ -15,5 +15,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByCategoryAndContentContaining(Category category, String keyword, PageRequest pageRequest);
 
     @Query(value = "select p from Post p where p.category = ?1 and p.title like %?2% or p.content like %?2%")
-    Page<Post> findAllByCategoryAndAllText(Category category, String keyword, PageRequest pageRequest);
+    Page<Post> findAllByCategoryAndTitleContainingOrCommentsContaining(Category category, String keyword, PageRequest pageRequest);
 }

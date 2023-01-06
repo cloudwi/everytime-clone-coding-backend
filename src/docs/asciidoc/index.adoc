@@ -1,0 +1,45 @@
+= REST Docs 문서 만들기 (글의 제목)
+backtony.github.io(부제)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs // 문서에 표기되는 코드들의 하이라이팅을 highlightjs를 사용
+:toc: left // toc (Table Of Contents)를 문서의 좌측에 두기
+:toclevels: 2
+:sectlinks:
+
+[[Member-API]]
+= Member API
+
+[[Member-회원가입]]
+== Member 회원가입
+=== request
+include::{snippets}/MemberController/signup/http-request.adoc[]
+=== request field
+include::{snippets}/MemberController/signup/request-fields.adoc[]
+=== response
+include::{snippets}/MemberController/signup/http-response.adoc[]
+=== response field
+include::{snippets}/MemberController/signup/response-fields.adoc[]
+
+[[Member-회원가입]]
+== Member 로그인
+=== request
+include::{snippets}/MemberController/login/http-request.adoc[]
+=== request field
+include::{snippets}/MemberController/login/request-fields.adoc[]
+=== response
+include::{snippets}/MemberController/login/http-response.adoc[]
+=== response field
+include::{snippets}/MemberController/login/response-fields.adoc[]
+
+[[Member-인증_이메일_요청]]
+== Member 인증 이메일 요청
+include::{snippets}/MemberController/email/request-headers.adoc[]
+=== request
+include::{snippets}/MemberController/email/http-request.adoc[]
+=== request field
+include::{snippets}/MemberController/email/request-fields.adoc[]
+=== response
+include::{snippets}/MemberController/email/http-response.adoc[]
+=== response field
+include::{snippets}/MemberController/email/response-fields.adoc[]

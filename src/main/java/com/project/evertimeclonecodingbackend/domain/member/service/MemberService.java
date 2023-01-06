@@ -1,22 +1,15 @@
 package com.project.evertimeclonecodingbackend.domain.member.service;
 
-import com.project.evertimeclonecodingbackend.domain.member.dto.JwtRequestDto;
-import com.project.evertimeclonecodingbackend.domain.member.dto.JwtResponseDto;
-import com.project.evertimeclonecodingbackend.domain.member.dto.MemberSignupRequestDto;
 import com.project.evertimeclonecodingbackend.domain.member.entity.Member;
-import com.project.evertimeclonecodingbackend.domain.member.entity.Role;
-import com.project.evertimeclonecodingbackend.domain.member.entity.School;
 import com.project.evertimeclonecodingbackend.domain.member.repository.MemberRepository;
-import com.project.evertimeclonecodingbackend.domain.member.service.impl.UserDetailsImpl;
+import com.project.evertimeclonecodingbackend.global.exception.CustomException;
+import com.project.evertimeclonecodingbackend.global.exception.ErrorCode;
 import com.project.evertimeclonecodingbackend.global.security.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,53 +17,68 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Transactional
-    public String signup(MemberSignupRequestDto request) {
-        Optional<Member> optionalMember = memberRepository.findByUserId(request.getuserId());
-
-        if (!optionalMember.isEmpty()) {
-            throw new IllegalArgumentException("중복된 아이디 입니다.");
-        }
-
-        Member member = new Member(
-                request.getuserId(),
-                request.getPassword(),
-                request.getNickname(),
-                request.getAdmissionId(),
-                School.valueOf(request.getSchool()),
-                Role.USER);
-        member.encryptPassword(passwordEncoder);
-
+    public Member signup(
+            String userId,
+            String password,
+            String nickname,
+            String name,
+            String school,
+            int admissionId
+    ) {
+        validateMatchedUserId(userId);
+        Member member = new Member(userId, passwordEncoder.encode(password), nickname, name, school, admissionId);
         memberRepository.save(member);
-        return member.getUserId();
+        return member;
     }
 
-    public JwtResponseDto login(JwtRequestDto jwtRequestDto) throws Exception {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(jwtRequestDto.getId(), jwtRequestDto.getPassword())
-        );
-
-        return createJwtToken(authentication);
-    }
-
-    private JwtResponseDto createJwtToken(Authentication authentication) {
-        UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        String token = jwtTokenProvider.generateToken(principal);
-        return new JwtResponseDto(token);
+    public String login(String userId, String password) {
+        Member findMember = findMember(userId);
+        validateMatchedPassword(password, findMember.getPassword());
+        String accessToken = jwtTokenProvider.createAccessToken(findMember.getUserId(), findMember.getRole().name());
+        return "bearer " + accessToken;
     }
 
     @Transactional
     public void deleteAll() {
         memberRepository.deleteAll();
+    }
+
+    public String checkEmail(String code, Authentication authentication) {
+        Member member = (Member) authentication.getPrincipal();
+
+        if (member.getEmailAuthenticationCode().equals(code) && member.isEmailAuthentication() == false) {
+            member.checkEmail();
+            return member.getUserId();
+        } else {
+            throw new IllegalArgumentException("이미 이메일 인증을 하셨거나, 유효한 코드가 아닙니다.");
+        }
+    }
+
+    private void validateMatchedUserId(String userId) {
+        if (memberRepository.findByUserId(userId).isPresent()) {
+            throw new CustomException(ErrorCode.USER_ID_DUPLICATE);
+        }
+    }
+
+    private Member findMember(String userId) {
+        return memberRepository.findByUserId(userId)
+                .orElseThrow(()->{
+                    throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+                });
+    }
+
+    private void validateMatchedPassword(String validPassword, String memberPassword) {
+        if (!passwordEncoder.matches(validPassword, memberPassword)) {
+            throw new CustomException(ErrorCode.PASSWORD_DIFFERENT);
+        }
     }
 }

@@ -3,13 +3,17 @@ package com.project.evertimeclonecodingbackend.domain.member.entity;
 import com.project.evertimeclonecodingbackend.domain.post.entity.Post;
 import com.project.evertimeclonecodingbackend.domain.comment.entity.Comment;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +25,8 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String nickname;
     @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
     private int admissionId;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -28,6 +34,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+    @Column
+    private boolean emailAuthentication;
+    @Column
+    private String emailAuthenticationCode;
 
     //연관관계
     @OneToMany(mappedBy = "member")
@@ -39,13 +49,15 @@ public class Member {
     public Member() {
     }
 
-    public Member(String userId, String password, String nickname, int admissionId, School school, Role role) {
+    public Member(String userId, String password, String nickname, String name, String school, int admissionId) {
         this.userId = userId;
         this.password = password;
         this.nickname = nickname;
+        this.name = name;
         this.admissionId = admissionId;
-        this.school = school;
-        this.role = role;
+        this.school = School.valueOf(school);
+        this.role = Role.ROLE_USER;
+        this.emailAuthentication = false;
     }
 
     public void encryptPassword(PasswordEncoder passwordEncoder) {
@@ -60,12 +72,48 @@ public class Member {
         return userId;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> auth = new ArrayList<>();
+        auth.add(new SimpleGrantedAuthority(role.name()));
+        return auth;
+    }
+
     public String getPassword() {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return this.userId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public String getNickname() {
         return nickname;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Role getRole() {
@@ -78,6 +126,18 @@ public class Member {
 
     public School getSchool() {
         return school;
+    }
+
+    public boolean isEmailAuthentication() {
+        return emailAuthentication;
+    }
+
+    public String getEmailAuthenticationCode() {
+        return emailAuthenticationCode;
+    }
+
+    public void setEmailAuthenticationCode(String emailAuthenticationCode) {
+        this.emailAuthenticationCode = emailAuthenticationCode;
     }
 
     public List<Post> getPosts() {
@@ -100,5 +160,9 @@ public class Member {
         if (comment.getMember() != null) {
             comment.setMember(this);
         }
+    }
+
+    public void checkEmail() {
+        this.emailAuthentication = true;
     }
 }

@@ -1,12 +1,12 @@
 package com.project.evertimeclonecodingbackend.domain.member.dto;
 
-public class EmailCheckRequestDto {
+public class MemberSendEmailRequestDto {
     private String email;
 
-    public EmailCheckRequestDto() {
+    public MemberSendEmailRequestDto() {
     }
 
-    public EmailCheckRequestDto(String email) {
+    public MemberSendEmailRequestDto(String email) {
         this.email = email;
     }
 

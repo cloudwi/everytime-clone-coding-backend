@@ -31,7 +31,7 @@ public class PostService {
 
     public Page<Post> search(Category category, Tag tag, String keyword, PageRequest pageRequest) {
         return switch (tag) {
-            case All -> postRepository.findAllByCategoryAndAllText(category, keyword, pageRequest);
+            case All -> postRepository.findAllByCategoryAndTitleContainingOrCommentsContaining(category, keyword, pageRequest);
             case TITLE -> postRepository.findAllByCategoryAndTitleContaining(category, keyword, pageRequest);
             case CONTENT -> postRepository.findAllByCategoryAndContentContaining(category, keyword, pageRequest);
         };

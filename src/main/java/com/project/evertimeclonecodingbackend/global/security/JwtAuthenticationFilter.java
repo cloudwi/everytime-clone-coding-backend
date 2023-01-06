@@ -1,18 +1,16 @@
 package com.project.evertimeclonecodingbackend.global.security;
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-public class JwtAuthenticationFilter extends GenericFilterBean {
-
-    private final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -21,20 +19,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-
-        if (token != null && token.startsWith("Bearer ")) {
-            String jwtToken = token.substring(7);
-
-            if (jwtTokenProvider.validateToken(jwtToken)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } else {
-            log.debug("JWT Token does not begin with Bearer String");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = jwtTokenProvider.resolveToken(request);
+        if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+            token = jwtTokenProvider.bearerRemove(token);
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }

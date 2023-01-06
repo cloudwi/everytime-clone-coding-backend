@@ -14,7 +14,7 @@ public class Comment {
     private String content;
 
     //연관관계
-    @JoinColumn(name ="member_id")
+    @JoinColumn(name ="member_id" , foreignKey = @ForeignKey(name ="fk"))
     @ManyToOne
     private Member member;
 

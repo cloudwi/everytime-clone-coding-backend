@@ -1,88 +1,75 @@
 package com.project.evertimeclonecodingbackend.global.security;
 
-import com.project.evertimeclonecodingbackend.domain.member.entity.Role;
-import com.project.evertimeclonecodingbackend.domain.member.service.UserDetailsServiceImpl;
-import com.project.evertimeclonecodingbackend.domain.member.service.impl.UserDetailsImpl;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.project.evertimeclonecodingbackend.domain.member.service.CustomUserDetailsService;
+import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
 
+@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
-    @Value("${jwt.secret")
+    @Value("spring.jwt.secret")
     private String secretKey;
 
-    @Value("${jwt.access-expired}")
-    private long tokenValidTime;
+    private final Long ACCESS_TOKEN_VALID_TIME = 1000L * 60 * 30; //30분
 
-    private final UserDetailsServiceImpl userDetailsService;
-
-    public JwtTokenProvider(UserDetailsServiceImpl userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    private final CustomUserDetailsService customUserDetailsService;
 
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String generateToken(UserDetailsImpl userDetails) {
-        Map<String, Object> claims = new HashMap<>();
+    public String createAccessToken(String userId, String role) {
+        Claims claims = Jwts.claims().setSubject(userId);
+        claims.put("role", role);
+        Date now = new Date();
 
-        boolean isAdmin = userDetails.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_" + Role.ADMIN));
-        if (isAdmin) {
-            claims.put("role", "admin");
-        } else {
-            claims.put("role", "user");
-        }
-
-        String nickname = userDetails.getMemberNickname();
-        claims.put("nickname", nickname);
-
-        return doGenerateToken(claims, userDetails.getUsername());
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setHeaderParam("Token", "JWT")
-                .setClaims(claims)
-                .setSubject(String.valueOf(subject))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + tokenValidTime * 1000))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // JWT 타입 지정 bearer
+                .setClaims(claims) // 내용
+                .setIssuedAt(now) // 발급시간
+                .setIssuer("cloudwi")
+                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME)) // 만료시간
+                .setSubject(userId)
+                .signWith(SignatureAlgorithm.HS256, secretKey) // 알고리즘, 시크릿 키
                 .compact();
     }
 
+    //토큰에서 인증정보를 조회하는 메서드
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(getUserId(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUserPk(String token) {
+    public String getUserId(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader(HttpHeaders.AUTHORIZATION);
+        return request.getHeader("AccessToken");
     }
 
-    public boolean validateToken(String jwtToken) {
+    public boolean validateAccessToken(String token) {
+        token = bearerRemove(token);
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String bearerRemove(String token) {
+        return token.substring("Bearer ".length());
     }
 }

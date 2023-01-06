@@ -1,8 +1,10 @@
 package com.project.evertimeclonecodingbackend.domain.member.service;
 
+import com.project.evertimeclonecodingbackend.domain.member.entity.Member;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -49,9 +51,11 @@ public class EmailService {
         return mimeMessage;
     }
 
-    public String sendEmail(String toEmail) throws MessagingException {
+    public String sendEmail(String toEmail, Authentication authentication) throws MessagingException {
         MimeMessage mimeMessage = createEmailForm(toEmail);
         javaMailSender.send(mimeMessage);
+        Member member = (Member) authentication.getPrincipal();
+        member.setEmailAuthenticationCode(authNum);
         return authNum;
     }
 }

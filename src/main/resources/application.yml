@@ -1,6 +1,6 @@
 jwt:
   secret: ${SECRET_KEY}
-  access-expired: 1800
+
 
 spring:
   profiles:
@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: cloudwiiiii
-    password: rkycbiqslzabfmrj
+    password: ${APP_PASSWORD}
     properties:
       mail:
         smtp:
