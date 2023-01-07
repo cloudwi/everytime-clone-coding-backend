@@ -1,0 +1,113 @@
+package com.project.everytimeclonecodingbackend.domain.post.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.everytimeclonecodingbackend.domain.member.entity.Member;
+import com.project.everytimeclonecodingbackend.domain.member.entity.School;
+import com.project.everytimeclonecodingbackend.domain.member.repository.MemberRepository;
+import com.project.everytimeclonecodingbackend.domain.member.service.MemberService;
+import com.project.everytimeclonecodingbackend.domain.post.dto.PostSaveRequestDto;
+import com.project.everytimeclonecodingbackend.domain.post.entity.Category;
+import com.project.everytimeclonecodingbackend.domain.post.entity.Post;
+import com.project.everytimeclonecodingbackend.domain.post.repository.PostRepository;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@AutoConfigureRestDocs
+class PostControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    private Member member;
+    private Post post;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private MemberService memberService;
+    private static String accessToken;
+    private ObjectMapper objectMapper;
+
+    @BeforeAll
+    static void setup1() {
+    }
+
+    @BeforeEach
+    void setup2() {
+        member = new Member("cloudwi", "testPassword", "동글구름", "장주영", "동의대학교", 17);
+        post = new Post("제목", "내용", Category.비밀게시판, true);
+        memberService.signup(member.getUserId(), member.getPassword(), member.getNickname(), member.getName(), member.getSchool().toString(), member.getAdmissionId());
+        accessToken = memberService.login(member.getUserId(), member.getPassword());
+        objectMapper = new ObjectMapper();
+    }
+
+    @Test
+    @DisplayName("게시물을 작성하면 게시물 아이디가 나옵니다.")
+    void save() throws Exception {
+        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto(
+                "제목임",
+                "내용임",
+                "비밀게시판",
+                true
+        );
+
+        mockMvc.perform(
+                        post("/api/v1/post")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("UTF-8")
+                                .header("AccessToken", accessToken)
+                                .content(objectMapper.writeValueAsString(postSaveRequestDto))
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document(
+                                "PostController/save",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                requestHeaders(
+                                        headerWithName("AccessToken").description("토큰")
+                                ),
+                                requestFields(
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                        fieldWithPath("category").type(JsonFieldType.STRING).description("카테고리"),
+                                        fieldWithPath("anonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
+                                ),
+                                responseFields(
+                                        fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    void findAllByCategory() {
+    }
+
+    @Test
+    void search() {
+    }
+}
