@@ -39,12 +39,12 @@ public class PostController {
         return ResponseEntity.ok(postSaveResponseDto);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<PostFindAllByCategoryResponseDto>> findAllByCategory(@RequestBody PostFindAllByCategoryRequestDto postFindAllByCategoryRequestDto) {
+    @GetMapping("/{category}")
+    public ResponseEntity<List<PostFindAllByCategoryResponseDto>> findAllByCategory(@PathVariable String category, @RequestParam int page) {
         List<PostFindAllByCategoryResponseDto> postFindPageResponseDtos = new ArrayList<>();
-        PageRequest pageRequest = PageRequest.of(postFindAllByCategoryRequestDto.getPage(), 20);
+        PageRequest pageRequest = PageRequest.of(page, 20);
 
-        postService.findAllByCategory(postFindAllByCategoryRequestDto.getCategory(), pageRequest).forEach(post -> {
+        postService.findAllByCategory(category, pageRequest).forEach(post -> {
             PostFindAllByCategoryResponseDto postFindPageResponseDto = new PostFindAllByCategoryResponseDto(
                     post.getId(),
                     post.getTitle(),

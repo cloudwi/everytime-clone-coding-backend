@@ -31,16 +31,15 @@ public class PostService {
         Post post = new Post(title, content, Category.valueOf(category), anonymous);
 
         long memberId = ((Member) authentication.getPrincipal()).getId();
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
         post.setMember(member);
 
         return postRepository.save(post);
     }
 
     public Page<Post> findAllByCategory(String category, PageRequest pageRequest) {
+        validateCategory(category);
         return postRepository.findAllByCategory(Category.valueOf(category), pageRequest);
     }
 
@@ -50,5 +49,13 @@ public class PostService {
             case TITLE -> postRepository.findAllByCategoryAndTitleContaining(category, keyword, pageRequest);
             case CONTENT -> postRepository.findAllByCategoryAndContentContaining(category, keyword, pageRequest);
         };
+    }
+
+    private void validateCategory(String category) {
+        try {
+            Category.valueOf(category);
+        } catch (IllegalArgumentException e) {
+            new CustomException(ErrorCode.CATEGORY_NOT_FOUND);
+        }
     }
 }

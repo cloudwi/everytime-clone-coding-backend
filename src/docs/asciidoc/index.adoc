@@ -8,10 +8,10 @@ backtony.github.io(부제)
 :sectlinks:
 
 [[Member-API]]
-= Member API
+= 회원 API
 
 [[Member-회원가입]]
-== Member 회원가입
+== Post 회원가입
 === request
 include::{snippets}/MemberController/signup/http-request.adoc[]
 === request field
@@ -22,7 +22,7 @@ include::{snippets}/MemberController/signup/http-response.adoc[]
 include::{snippets}/MemberController/signup/response-fields.adoc[]
 
 [[Member-회원가입]]
-== Member 로그인
+== Post 로그인
 === request
 include::{snippets}/MemberController/login/http-request.adoc[]
 === request field
@@ -33,7 +33,7 @@ include::{snippets}/MemberController/login/http-response.adoc[]
 include::{snippets}/MemberController/login/response-fields.adoc[]
 
 [[Member-인증_이메일_요청]]
-== Member 인증 이메일 요청
+== Post 인증 이메일 요청
 include::{snippets}/MemberController/email/request-headers.adoc[]
 === request
 include::{snippets}/MemberController/email/http-request.adoc[]
@@ -45,10 +45,11 @@ include::{snippets}/MemberController/email/http-response.adoc[]
 include::{snippets}/MemberController/email/response-fields.adoc[]
 
 [[Member-코드_인증_요청]]
-== Member 코드 인증 요청
-include::{snippets}/MemberController/email/check/request-headers.adoc[]
+== Post 코드 승인 요청
 === request
 include::{snippets}/MemberController/email/check/http-request.adoc[]
+=== request headers
+include::{snippets}/MemberController/email/check/request-headers.adoc[]
 === request field
 include::{snippets}/MemberController/email/check/request-fields.adoc[]
 === response
@@ -56,14 +57,33 @@ include::{snippets}/MemberController/email/check/http-response.adoc[]
 === response field
 include::{snippets}/MemberController/email/check/response-fields.adoc[]
 
+[[Member-API]]
+= 게시판 API
+
 [[Post-게시글_생성]]
 == Post 게시글 생성
-include::{snippets}/PostController/save/request-headers.adoc[]
 === request
 include::{snippets}/PostController/save/http-request.adoc[]
+=== request headers
+include::{snippets}/PostController/save/request-headers.adoc[]
 === request field
 include::{snippets}/PostController/save/request-fields.adoc[]
 === response
 include::{snippets}/PostController/save/http-response.adoc[]
 === response field
 include::{snippets}/PostController/save/response-fields.adoc[]
+
+[[Post-게시판_조회]]
+== Get 게시판 조회
+=== request
+include::{snippets}/PostController/findAllByCategory/http-request.adoc[]
+=== request path parameters
+include::{snippets}/PostController/findAllByCategory/path-parameters.adoc[]
+=== request query parameters
+include::{snippets}/PostController/findAllByCategory/query-parameters.adoc[]
+=== request field
+include::{snippets}/PostController/findAllByCategory/request-headers.adoc[]
+=== response
+include::{snippets}/PostController/findAllByCategory/http-response.adoc[]
+=== response field
+include::{snippets}/PostController/findAllByCategory/response-fields.adoc[]
