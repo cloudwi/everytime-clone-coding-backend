@@ -43,3 +43,27 @@ include::{snippets}/MemberController/email/request-fields.adoc[]
 include::{snippets}/MemberController/email/http-response.adoc[]
 === response field
 include::{snippets}/MemberController/email/response-fields.adoc[]
+
+[[Member-코드_인증_요청]]
+== Member 코드 인증 요청
+include::{snippets}/MemberController/email/check/request-headers.adoc[]
+=== request
+include::{snippets}/MemberController/email/check/http-request.adoc[]
+=== request field
+include::{snippets}/MemberController/email/check/request-fields.adoc[]
+=== response
+include::{snippets}/MemberController/email/check/http-response.adoc[]
+=== response field
+include::{snippets}/MemberController/email/check/response-fields.adoc[]
+
+[[Post-게시글_생성]]
+== Post 게시글 생성
+include::{snippets}/PostController/save/request-headers.adoc[]
+=== request
+include::{snippets}/PostController/save/http-request.adoc[]
+=== request field
+include::{snippets}/PostController/save/request-fields.adoc[]
+=== response
+include::{snippets}/PostController/save/http-response.adoc[]
+=== response field
+include::{snippets}/PostController/save/response-fields.adoc[]
