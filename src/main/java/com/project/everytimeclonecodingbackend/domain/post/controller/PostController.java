@@ -27,7 +27,10 @@ public class PostController {
     }
 
     @PostMapping()
-    public ResponseEntity<PostSaveResponseDto> save(@RequestBody PostSaveRequestDto postSaveRequestDto, Authentication authentication) {
+    public ResponseEntity<PostSaveResponseDto> save(
+            @RequestBody PostSaveRequestDto postSaveRequestDto,
+            Authentication authentication
+    ) {
         Post post = postService.save(
                 postSaveRequestDto.getTitle(),
                 postSaveRequestDto.getContent(),
@@ -35,7 +38,13 @@ public class PostController {
                 postSaveRequestDto.isAnonymous(),
                 authentication
         );
-        PostSaveResponseDto postSaveResponseDto = new PostSaveResponseDto(post.getId());
+        PostSaveResponseDto postSaveResponseDto = new PostSaveResponseDto(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.isAnonymous() ? "익명" : post.getMember().getNickname(),
+                post.getCreateTime());
+
         return ResponseEntity.ok(postSaveResponseDto);
     }
 

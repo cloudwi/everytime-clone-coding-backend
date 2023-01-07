@@ -94,7 +94,11 @@ class PostControllerTest {
                                         fieldWithPath("anonymous").type(JsonFieldType.BOOLEAN).description("익명 여부")
                                 ),
                                 responseFields(
-                                        fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디")
+                                        fieldWithPath("postId").type(JsonFieldType.NUMBER).description("아이디"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("작성자"),
+                                        fieldWithPath("createTime").type(JsonFieldType.STRING).description("작성 시간")
                                 )
                         )
                 );
