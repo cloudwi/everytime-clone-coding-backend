@@ -167,7 +167,6 @@ class PostControllerTest {
         Authentication authentication = jwtTokenProvider.getAuthentication(thisAccessToken);
 
         Post post = postService.save("제목", "내용", "비밀게시판", true, authentication);
-        Comment comment = commentService.save("댓글 내용", true, 1, authentication);
 
         mockMvc.perform(
                         get("/api/v1/post/{category}/{id}", post.getCategory().toString(), post.getId())
