@@ -8,6 +8,7 @@ import com.project.everytimeclonecodingbackend.domain.post.entity.Post;
 import com.project.everytimeclonecodingbackend.domain.post.entity.Tag;
 import com.project.everytimeclonecodingbackend.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -124,5 +125,100 @@ public class PostController {
     public ResponseEntity deleteById(@RequestBody PostDeleteRequestDto postDeleteRequestDto, Authentication authentication) {
         postService.deleteById(postDeleteRequestDto.getId(), authentication);
         return ResponseEntity.ok().body(null);
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity<PostFindMainResponseDto> mainPost() {
+        PageRequest pageRequest = PageRequest.of(0, 4, Sort.Direction.DESC, "createTime");
+
+        Page<Post> freedomPosts = postService.findAllByCategory("자유게시판", pageRequest);
+        Page<Post> secretPosts = postService.findAllByCategory("비밀게시판", pageRequest);
+        Page<Post> graduatePosts = postService.findAllByCategory("졸업생게시판", pageRequest);
+        Page<Post> freshmanPosts = postService.findAllByCategory("새내기게시판", pageRequest);
+        Page<Post> issuePosts = postService.findAllByCategory("시사_이슈", pageRequest);
+        Page<Post> marketplacePosts = postService.findAllByCategory("장터게시판", pageRequest);
+
+        List<FreedomPostDto> freedomPostsDtos = new ArrayList<>();
+        freedomPosts.forEach(post -> {
+            FreedomPostDto freedomPostDto = new FreedomPostDto(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getCreateTime(),
+                    post.getLikes().size()
+            );
+
+            freedomPostsDtos.add(freedomPostDto);
+        });
+
+        List<SecretPostDto> secretPostDtos = new ArrayList<>();
+        secretPosts.forEach(post -> {
+            SecretPostDto secretPostsDto = new SecretPostDto(
+                    post.getId(),
+                    post.getContent(),
+                    post.getCreateTime(),
+                    post.getLikes().size()
+            );
+
+            secretPostDtos.add(secretPostsDto);
+        });
+
+        List<GraduatePostDto> graduatePostDtos = new ArrayList<>();
+        graduatePosts.forEach(post -> {
+            GraduatePostDto graduatePostDto = new GraduatePostDto(
+                    post.getId(),
+                    post.getContent(),
+                    post.getCreateTime(),
+                    post.getLikes().size()
+            );
+
+            graduatePostDtos.add(graduatePostDto);
+        });
+
+        List<FreshmanPostDto> freshmanPostDtos = new ArrayList<>();
+        freshmanPosts.forEach(post -> {
+            FreshmanPostDto freshmanPostDto = new FreshmanPostDto(
+                    post.getId(),
+                    post.getContent(),
+                    post.getCreateTime(),
+                    post.getLikes().size()
+            );
+
+            freshmanPostDtos.add(freshmanPostDto);
+        });
+
+        List<IssuePostDto> issuePostDtos = new ArrayList<>();
+        issuePosts.forEach(post -> {
+            IssuePostDto issuePostDto = new IssuePostDto(
+                    post.getId(),
+                    post.getContent(),
+                    post.getCreateTime(),
+                    post.getLikes().size()
+            );
+
+            issuePostDtos.add(issuePostDto);
+        });
+
+        List<MarketplacePostDto> marketplacePostDtos = new ArrayList<>();
+        issuePosts.forEach(post -> {
+            MarketplacePostDto marketplacePostDto = new MarketplacePostDto(
+                    post.getId(),
+                    post.getContent(),
+                    post.getCreateTime(),
+                    post.getLikes().size()
+            );
+
+            marketplacePostDtos.add(marketplacePostDto);
+        });
+
+        PostFindMainResponseDto postFindMainResponseDto = new PostFindMainResponseDto(
+                freedomPostsDtos,
+                secretPostDtos,
+                graduatePostDtos,
+                freshmanPostDtos,
+                issuePostDtos,
+                marketplacePostDtos
+        );
+
+        return ResponseEntity.ok(postFindMainResponseDto);
     }
 }

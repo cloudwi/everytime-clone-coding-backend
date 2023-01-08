@@ -56,6 +56,12 @@ public class PostService {
         return postRepository.findAllByCategory(Category.valueOf(category), pageRequest);
     }
 
+    public Page<Post> findAllByCategory(String category, PageRequest pageRequest) {
+        validateCategory(category);
+
+        return postRepository.findAllByCategory(Category.valueOf(category), pageRequest);
+    }
+
     public Page<Post> search(Category category, Tag tag, String keyword, PageRequest pageRequest, Authentication authentication) {
 
         long memberId = ((Member) authentication.getPrincipal()).getId();
