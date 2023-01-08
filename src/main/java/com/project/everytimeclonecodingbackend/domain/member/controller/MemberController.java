@@ -9,10 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 
@@ -68,5 +65,20 @@ public class MemberController {
         MemberCheckEmailResponseDto memberCheckEmailResponseDto = new MemberCheckEmailResponseDto(userId);
 
         return ResponseEntity.ok(memberCheckEmailResponseDto);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<MemberProfileResponseDto> profile(Authentication authentication) {
+        Member member = memberService.profile(authentication);
+
+        MemberProfileResponseDto memberProfileResponseDto = new MemberProfileResponseDto(
+                member.getNickname(),
+                member.getName(),
+                member.getUserId(),
+                member.getSchool().toString(),
+                member.getAdmissionId()
+        );
+
+        return ResponseEntity.ok(memberProfileResponseDto);
     }
 }

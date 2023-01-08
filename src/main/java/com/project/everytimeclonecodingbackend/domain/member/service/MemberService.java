@@ -81,4 +81,10 @@ public class MemberService {
             throw new CustomException(ErrorCode.PASSWORD_DIFFERENT);
         }
     }
+
+    public Member profile(Authentication authentication) {
+        long memberId = ((Member) authentication.getPrincipal()).getId();
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    }
 }
