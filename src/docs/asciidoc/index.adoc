@@ -7,7 +7,7 @@ backtony.github.io(부제)
 :toclevels: 2
 :sectlinks:
 
-[[Member-API]]
+[[회원-API]]
 = 회원 API
 
 [[Member-회원가입]]
@@ -57,7 +57,7 @@ include::{snippets}/MemberController/email/check/http-response.adoc[]
 === response field
 include::{snippets}/MemberController/email/check/response-fields.adoc[]
 
-[[Member-API]]
+[[게시판-API]]
 = 게시판 API
 
 [[Post-게시글_생성]]
@@ -87,3 +87,33 @@ include::{snippets}/PostController/findAllByCategory/request-headers.adoc[]
 include::{snippets}/PostController/findAllByCategory/http-response.adoc[]
 === response field
 include::{snippets}/PostController/findAllByCategory/response-fields.adoc[]
+
+[[Post-게시판_상세_조회]]
+== Get 게시판 상세 조회
+=== request
+include::{snippets}/PostController/findById/http-request.adoc[]
+=== request path parameters
+include::{snippets}/PostController/findById/path-parameters.adoc[]
+=== request field
+include::{snippets}/PostController/findById/request-headers.adoc[]
+=== response
+include::{snippets}/PostController/findById/http-response.adoc[]
+=== response field
+include::{snippets}/PostController/findById/response-fields.adoc[]
+
+[[댓글-API]]
+= 댓글 API
+
+
+[[Post-댓글_생성]]
+== Post 댓글 생성
+=== request
+include::{snippets}/CommentController/save/http-request.adoc[]
+=== request headers
+include::{snippets}/CommentController/save/request-headers.adoc[]
+=== request field
+include::{snippets}/CommentController/save/request-fields.adoc[]
+=== response
+include::{snippets}/CommentController/save/http-response.adoc[]
+=== response field
+include::{snippets}/CommentController/save/response-fields.adoc[]

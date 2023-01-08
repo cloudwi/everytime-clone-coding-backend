@@ -1,38 +1,17 @@
 package com.project.everytimeclonecodingbackend.domain.post.dto;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostSaveRequestDto {
 
     private String title;
     private String content;
     private String category;
     private boolean anonymous;
-
-    private PostSaveRequestDto() {
-
-    }
-
-    public PostSaveRequestDto(String title, String content, String category, boolean anonymous) {
-        this.title = title;
-        this.content = content;
-        this.category = category;
-        this.anonymous = anonymous;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-
-
-    public boolean isAnonymous() {
-        return anonymous;
-    }
 }

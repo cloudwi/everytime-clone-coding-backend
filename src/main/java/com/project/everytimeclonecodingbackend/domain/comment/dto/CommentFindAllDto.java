@@ -5,11 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommentSaveRequestDto {
+public class CommentFindAllDto {
+    private long id;
     private String content;
-    private long postId;
-    private boolean anonymous;
+    private String nickname;
+    private LocalDateTime createTime;
 }

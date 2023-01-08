@@ -25,7 +25,9 @@ public enum ErrorCode {
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "데이터가 이미 존재합니다."),
     USER_ID_DUPLICATE(HttpStatus.CONFLICT, "아이디가 중복 됩니다."),
     EMAIL_CHECK_DUPLICATE(HttpStatus.CONFLICT, "이미 이메일 인증을 하셨거나, 유효한 코드가 아닙니다."),
-    CATEGORY_NOT_FOUND(HttpStatus.CONFLICT, "카테고리를 찾지 못했습니다.");
+    CATEGORY_NOT_FOUND(HttpStatus.CONFLICT, "카테고리를 찾지 못했습니다."),
+    NOT_CHECK_EMAIL(HttpStatus.UNAUTHORIZED, "이메일 인증이 되지 않았습니다"),
+    POST_NOT_FOUND(HttpStatus.CONFLICT, "게시글을 찾지 못했습니다.");
 
     private final HttpStatus httpStatus;
 

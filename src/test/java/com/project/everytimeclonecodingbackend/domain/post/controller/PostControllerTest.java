@@ -1,16 +1,16 @@
 package com.project.everytimeclonecodingbackend.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.everytimeclonecodingbackend.domain.comment.entity.Comment;
+import com.project.everytimeclonecodingbackend.domain.comment.service.CommentService;
 import com.project.everytimeclonecodingbackend.domain.member.entity.Member;
 import com.project.everytimeclonecodingbackend.domain.member.repository.MemberRepository;
 import com.project.everytimeclonecodingbackend.domain.member.service.MemberService;
 import com.project.everytimeclonecodingbackend.domain.post.dto.PostSaveRequestDto;
-import com.project.everytimeclonecodingbackend.domain.post.entity.Category;
 import com.project.everytimeclonecodingbackend.domain.post.entity.Post;
 import com.project.everytimeclonecodingbackend.domain.post.repository.PostRepository;
 import com.project.everytimeclonecodingbackend.domain.post.service.PostService;
 import com.project.everytimeclonecodingbackend.global.security.JwtTokenProvider;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -31,9 +32,11 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 class PostControllerTest {
@@ -48,12 +51,17 @@ class PostControllerTest {
     @Autowired
     private PostService postService;
     @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setup() {
         memberRepository.deleteAll();
+
         objectMapper = new ObjectMapper();
     }
 
@@ -116,13 +124,6 @@ class PostControllerTest {
 
         Post post = postService.save("제목", "내용", "비밀게시판", true, authentication);
 
-        postService.save(
-                post.getTitle(),
-                post.getContent(),
-                post.getCategory().toString(),
-                post.isAnonymous(),
-                authentication
-        );
         mockMvc.perform(
                         get("/api/v1/post/{category}", post.getCategory().toString())
                                 .param("page", String.valueOf(0))
@@ -155,8 +156,53 @@ class PostControllerTest {
                         )
                 );
     }
-//
-//    @Test
-//    void search() {
-//    }
+
+    @Test
+    @DisplayName("게시글 아이디로 게시글을 상세 조회할 수 있습니다.")
+    void findById() throws Exception {
+        memberService.signup("cloudwi", "testPassword", "동글구름", "장주영", "동의대학교", 17);
+
+        String accessToken = memberService.login("cloudwi", "testPassword");
+        String thisAccessToken = jwtTokenProvider.bearerRemove(accessToken);
+        Authentication authentication = jwtTokenProvider.getAuthentication(thisAccessToken);
+
+        Post post = postService.save("제목", "내용", "비밀게시판", true, authentication);
+
+        mockMvc.perform(
+                        get("/api/v1/post/{category}/{id}", post.getCategory().toString(), post.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("UTF-8")
+                                .header("AccessToken", accessToken)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(post.getId()))
+                .andDo(
+                        document(
+                                "PostController/findById",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                pathParameters(
+                                        parameterWithName("category").description("게시판 카테고리"),
+                                        parameterWithName("id").description("게시판 아이디")
+                                ),
+                                requestHeaders(
+                                        headerWithName("AccessToken").description("토큰")
+                                ),
+                                responseFields(
+                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("아이디"),
+                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
+                                        fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                        fieldWithPath("createTime").type(JsonFieldType.STRING).description("게시물 생성 시간"),
+                                        fieldWithPath("commentFindAllDtos[]").type(JsonFieldType.ARRAY).description("댓글 들"),
+                                        fieldWithPath("commentFindAllDtos[].id").type(JsonFieldType.NUMBER).description("댓글 아이디").optional(),
+                                        fieldWithPath("commentFindAllDtos[].content").type(JsonFieldType.STRING).description("댓글 내용").optional(),
+                                        fieldWithPath("commentFindAllDtos[].nickname").type(JsonFieldType.STRING).description("댓글 작성자").optional(),
+                                        fieldWithPath("commentFindAllDtos[].createTime").type(JsonFieldType.STRING).description("댓글 작성 시간").optional(),
+                                        fieldWithPath("deletable").type(JsonFieldType.BOOLEAN).description("삭제 여부")
+                                )
+                        )
+                );
+
+    }
 }
