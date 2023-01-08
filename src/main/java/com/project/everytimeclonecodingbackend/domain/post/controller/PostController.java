@@ -1,13 +1,13 @@
 package com.project.everytimeclonecodingbackend.domain.post.controller;
 
-import com.project.everytimeclonecodingbackend.domain.comment.dto.CommentFindAllDto;
+import com.project.everytimeclonecodingbackend.domain.comment.dto.CommentFindAllResponseDto;
+import com.project.everytimeclonecodingbackend.domain.comment.service.CommentService;
 import com.project.everytimeclonecodingbackend.domain.post.dto.*;
 import com.project.everytimeclonecodingbackend.domain.post.entity.Category;
 import com.project.everytimeclonecodingbackend.domain.post.entity.Post;
 import com.project.everytimeclonecodingbackend.domain.post.entity.Tag;
 import com.project.everytimeclonecodingbackend.domain.post.service.PostService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +19,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/post")
+@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
+    private final CommentService commentService;
 
     @PostMapping()
     public ResponseEntity<PostSaveResponseDto> save(
@@ -96,13 +94,14 @@ public class PostController {
         Post post = postService.findById(id, authentication);
         boolean isDeletable = postService.isDeletable(id, authentication);
 
-        List<CommentFindAllDto> commentFindAllDtos = new ArrayList<>();
+        List<CommentFindAllResponseDto> commentFindAllDtos = new ArrayList<>();
         post.getComments().forEach(comment -> {
-            CommentFindAllDto commentFindAllDto = new CommentFindAllDto(
+            CommentFindAllResponseDto commentFindAllDto = new CommentFindAllResponseDto(
                     comment.getId(),
                     comment.getContent(),
                     comment.isAnonymous() ? "익명" : comment.getMember().getNickname(),
-                    comment.getCreateTime()
+                    comment.getCreateTime(),
+                    commentService.isDeletable(comment.getId(),authentication)
             );
             commentFindAllDtos.add(commentFindAllDto);
         });
@@ -114,7 +113,8 @@ public class PostController {
                 post.isAnonymous() ? "익명" : post.getMember().getNickname(),
                 post.getCreateTime(),
                 isDeletable,
-                commentFindAllDtos
+                commentFindAllDtos,
+                post.getLikes().size()
         );
 
         return ResponseEntity.ok(postFindByIdResponseDto);

@@ -27,7 +27,9 @@ public enum ErrorCode {
     EMAIL_CHECK_DUPLICATE(HttpStatus.CONFLICT, "이미 이메일 인증을 하셨거나, 유효한 코드가 아닙니다."),
     CATEGORY_NOT_FOUND(HttpStatus.CONFLICT, "카테고리를 찾지 못했습니다."),
     NOT_CHECK_EMAIL(HttpStatus.UNAUTHORIZED, "이메일 인증이 되지 않았습니다"),
-    POST_NOT_FOUND(HttpStatus.CONFLICT, "게시글을 찾지 못했습니다.");
+    POST_NOT_FOUND(HttpStatus.CONFLICT, "게시글을 찾지 못했습니다."),
+    POST_NOT_DELETE(HttpStatus.CONFLICT, "해당 게시글은 삭제할 수 없습니다."),
+    COMMENT_NOT_FOUND(HttpStatus.CONFLICT, "댓글을 찾지 못했습니다.");
 
     private final HttpStatus httpStatus;
 

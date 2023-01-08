@@ -515,19 +515,35 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_response_field_7">response field</a></li>
 </ul>
 </li>
+<li><a href="#Delete-게시글_삭제">Delete 게시글 삭제</a>
+<ul class="sectlevel2">
+<li><a href="#_request_8">request</a></li>
+<li><a href="#_request_field_8">request field</a></li>
+<li><a href="#_response_8">response</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#댓글-API">댓글 API</a>
 <ul class="sectlevel1">
 <li><a href="#Post-댓글_생성">Post 댓글 생성</a>
 <ul class="sectlevel2">
-<li><a href="#_request_8">request</a></li>
+<li><a href="#_request_9">request</a></li>
 <li><a href="#_request_headers_3">request headers</a></li>
-<li><a href="#_request_field_8">request field</a></li>
-<li><a href="#_response_8">response</a></li>
+<li><a href="#_request_field_9">request field</a></li>
+<li><a href="#_response_9">response</a></li>
 <li><a href="#_response_field_8">response field</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#공감-API">공감 API</a>
+<ul class="sectlevel2">
+<li><a href="#Post-공감_생성">request</a></li>
+<li><a href="#_request_headers_4">request headers</a></li>
+<li><a href="#_request_field_10">request field</a></li>
+<li><a href="#_response_10">response</a></li>
+<li><a href="#_response_field_9">response field</a></li>
 </ul>
 </li>
 </ul>
@@ -730,7 +746,7 @@ Expires: 0
 Content-Length: 227
 
 {
-  "accessToken" : "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE2MTM1MywiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE2MzE1M30.ioTnUrEiUx1WQTs7JMgv2VMX_Lus7mY9fgbhOjV3euU"
+  "accessToken" : "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzQ4OCwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTI4OH0.il2dabAHKCroeRYf8stH76Xq0psEqTX1YAB-NLsZfUY"
 }</code></pre>
 </div>
 </div>
@@ -788,7 +804,7 @@ Content-Length: 227
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/member/email HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE2MTM1OSwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE2MzE1OX0.PME1xTN4H10FxXjbBZgnXNjgQnHFTS3Igzazrx3iWU8
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzQ5MywiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTI5M30.HRfM9TintHtxVL9w7564u8n8RXOZMY2YV970rmi6D8I
 Content-Length: 35
 Host: localhost:8080
 
@@ -844,7 +860,7 @@ Expires: 0
 Content-Length: 25
 
 {
-  "code" : "zj7Y5q7v"
+  "code" : "24UrbHlu"
 }</code></pre>
 </div>
 </div>
@@ -884,12 +900,12 @@ Content-Length: 25
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/member/email/check HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE2MTM1MywiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE2MzE1M30.ioTnUrEiUx1WQTs7JMgv2VMX_Lus7mY9fgbhOjV3euU
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzQ4OSwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTI4OX0.cSVhcu0-yUyqeTCb-yMDfPy6QZpamD0_8E3Jut8mELk
 Content-Length: 25
 Host: localhost:8080
 
 {
-  "code" : "a3yMA703"
+  "code" : "Fuz0vgnQ"
 }</code></pre>
 </div>
 </div>
@@ -1002,7 +1018,7 @@ Content-Length: 26
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/post HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE2MTM2NCwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE2MzE2NH0.arZ84Jod4Sj2HSbgIJ3ACAv3nPMR1OBEE-5yKc904ME
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzUwMiwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTMwMn0.ZLeaenAw8bFWBgbT09vOGEyZcBLQeABHgTTqiRu3TJQ
 Content-Length: 110
 Host: localhost:8080
 
@@ -1097,11 +1113,11 @@ Expires: 0
 Content-Length: 144
 
 {
-  "postId" : -47,
+  "postId" : -46,
   "title" : "제목임",
   "content" : "내용임",
   "nickname" : "익명",
-  "createTime" : "2023-01-08T16:02:44.580498"
+  "createTime" : "2023-01-08T22:11:47.048447"
 }</code></pre>
 </div>
 </div>
@@ -1161,7 +1177,7 @@ Content-Length: 144
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/post/%EB%B9%84%EB%B0%80%EA%B2%8C%EC%8B%9C%ED%8C%90?page=0 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE2MTM2NCwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE2MzE2NH0.arZ84Jod4Sj2HSbgIJ3ACAv3nPMR1OBEE-5yKc904ME
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzUwNywiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTMwN30.3DA4s1CyTshojk47ZbW49n2ftm4VVJc6g89Y84_Sboc
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1252,11 +1268,11 @@ Expires: 0
 Content-Length: 138
 
 [ {
-  "id" : -46,
+  "id" : -45,
   "title" : "제목",
   "content" : "내용",
   "nickname" : "익명",
-  "createTime" : "2023-01-08T16:02:44.877355"
+  "createTime" : "2023-01-08T22:11:51.429404"
 } ]</code></pre>
 </div>
 </div>
@@ -1314,9 +1330,9 @@ Content-Length: 138
 <h3 id="_request_7"><a class="link" href="#_request_7">request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/post/%EB%B9%84%EB%B0%80%EA%B2%8C%EC%8B%9C%ED%8C%90/-48 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/post/%EB%B9%84%EB%B0%80%EA%B2%8C%EC%8B%9C%ED%8C%90/-47 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE2MTM2NCwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE2MzE2NH0.arZ84Jod4Sj2HSbgIJ3ACAv3nPMR1OBEE-5yKc904ME
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzQ5OCwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTI5OH0.n_60q0gLoUnmetjmJ5MCG9OJjVgYE-tDRnwautwctlY
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1387,15 +1403,16 @@ X-XSS-Protection: 0
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 186
+Content-Length: 205
 
 {
-  "id" : -48,
+  "id" : -47,
   "title" : "제목",
   "content" : "내용",
   "nickname" : "익명",
-  "createTime" : "2023-01-08T16:02:44.099078",
+  "createTime" : "2023-01-08T22:11:42.475311",
   "commentFindAllDtos" : [ ],
+  "likeCount" : 0,
   "deletable" : true
 }</code></pre>
 </div>
@@ -1472,8 +1489,76 @@ Content-Length: 186
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">삭제 여부</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>likeCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공감 수</p></td>
+</tr>
 </tbody>
 </table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="Delete-게시글_삭제"><a class="link" href="#Delete-게시글_삭제">Delete 게시글 삭제</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_request_8"><a class="link" href="#_request_8">request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/v1/post HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzUxMSwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTMxMX0.Xb8e8lt68iysvqvcB8XWd1lLSCD5Zg9kWnIno39PH0Q
+Content-Length: 16
+Host: localhost:8080
+
+{
+  "id" : -44
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_request_field_8"><a class="link" href="#_request_field_8">request field</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AccessToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_response_8"><a class="link" href="#_response_8">response</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization,AccessToken
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1482,12 +1567,12 @@ Content-Length: 186
 <h2 id="Post-댓글_생성"><a class="link" href="#Post-댓글_생성">Post 댓글 생성</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_request_8"><a class="link" href="#_request_8">request</a></h3>
+<h3 id="_request_9"><a class="link" href="#_request_9">request</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/comment HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE2MTM1MCwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE2MzE1MH0.9TArZjVuj8XN3rEbENx-IpuxISfxAbiFHMcYrjbpDAo
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzQ3NCwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTI3NH0.Ro1C-tqfoXQ-2vPlikyT3RPf002pVu3aME4eyW_Hsl4
 Content-Length: 71
 Host: localhost:8080
 
@@ -1521,7 +1606,7 @@ Host: localhost:8080
 </table>
 </div>
 <div class="sect2">
-<h3 id="_request_field_8"><a class="link" href="#_request_field_8">request field</a></h3>
+<h3 id="_request_field_9"><a class="link" href="#_request_field_9">request field</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1555,7 +1640,7 @@ Host: localhost:8080
 </table>
 </div>
 <div class="sect2">
-<h3 id="_response_8"><a class="link" href="#_response_8">response</a></h3>
+<h3 id="_response_9"><a class="link" href="#_response_9">response</a></h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -1579,7 +1664,7 @@ Content-Length: 133
   "id" : 1,
   "content" : "댓글 내용",
   "postId" : 1,
-  "createTime" : "2023-01-08T16:02:30.471254",
+  "createTime" : "2023-01-08T22:11:19.858529",
   "nickname" : "익명"
 }</code></pre>
 </div>
@@ -1631,11 +1716,124 @@ Content-Length: 133
 </div>
 </div>
 </div>
+<h1 id="공감-API" class="sect0"><a class="link" href="#공감-API">공감 API</a></h1>
+<div class="sect2">
+<h3 id="Post-공감_생성"><a class="link" href="#Post-공감_생성">request</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/like HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+AccessToken: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbG91ZHdpIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTY3MzE4MzQ4MiwiaXNzIjoiY2xvdWR3aSIsImV4cCI6MTY3MzE4NTI4Mn0.1axmAlUHe2ah0jL5kY2BKk6h3wgco-UW0D7QOeuHJ6E
+Content-Length: 20
+Host: localhost:8080
+
+{
+  "postId" : -48
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_request_headers_4"><a class="link" href="#_request_headers_4">request headers</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AccessToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_request_field_10"><a class="link" href="#_request_field_10">request field</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>postId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_response_10"><a class="link" href="#_response_10">response</a></h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization,AccessToken
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 14
+
+{
+  "id" : 1
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_field_9"><a class="link" href="#_response_field_9">response field</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공감 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-01-08 15:59:06 +0900
+Last updated 2023-01-08 22:06:48 +0900
 </div>
 </div>
 </body>

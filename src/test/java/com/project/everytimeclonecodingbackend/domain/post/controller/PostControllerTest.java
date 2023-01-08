@@ -1,11 +1,12 @@
 package com.project.everytimeclonecodingbackend.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.everytimeclonecodingbackend.domain.comment.entity.Comment;
 import com.project.everytimeclonecodingbackend.domain.comment.service.CommentService;
 import com.project.everytimeclonecodingbackend.domain.member.entity.Member;
 import com.project.everytimeclonecodingbackend.domain.member.repository.MemberRepository;
+import com.project.everytimeclonecodingbackend.domain.member.service.EmailService;
 import com.project.everytimeclonecodingbackend.domain.member.service.MemberService;
+import com.project.everytimeclonecodingbackend.domain.post.dto.PostDeleteRequestDto;
 import com.project.everytimeclonecodingbackend.domain.post.dto.PostSaveRequestDto;
 import com.project.everytimeclonecodingbackend.domain.post.entity.Post;
 import com.project.everytimeclonecodingbackend.domain.post.repository.PostRepository;
@@ -27,8 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -56,6 +56,8 @@ class PostControllerTest {
     private CommentService commentService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private EmailService emailService;
     private ObjectMapper objectMapper;
 
     @BeforeEach
@@ -71,6 +73,12 @@ class PostControllerTest {
         Member member = new Member("cloudwi", "testPassword", "동글구름", "장주영", "동의대학교", 17);
         memberService.signup(member.getUserId(), member.getPassword(), member.getNickname(), member.getName(), member.getSchool().toString(), member.getAdmissionId());
         String accessToken = memberService.login(member.getUserId(), member.getPassword());
+
+        String thisAccessToken = jwtTokenProvider.bearerRemove(accessToken);
+        Authentication authentication = jwtTokenProvider.getAuthentication(thisAccessToken);
+
+        String authCode = emailService.sendEmail("cloudwi@naver.com", authentication);
+        memberService.checkEmail(authCode, authentication);
 
         PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto(
                 "제목임",
@@ -122,6 +130,9 @@ class PostControllerTest {
         String thisAccessToken = jwtTokenProvider.bearerRemove(accessToken);
         Authentication authentication = jwtTokenProvider.getAuthentication(thisAccessToken);
 
+        String authCode = emailService.sendEmail("cloudwi@naver.com", authentication);
+        memberService.checkEmail(authCode, authentication);
+
         Post post = postService.save("제목", "내용", "비밀게시판", true, authentication);
 
         mockMvc.perform(
@@ -166,6 +177,9 @@ class PostControllerTest {
         String thisAccessToken = jwtTokenProvider.bearerRemove(accessToken);
         Authentication authentication = jwtTokenProvider.getAuthentication(thisAccessToken);
 
+        String authCode = emailService.sendEmail("cloudwi@naver.com", authentication);
+        memberService.checkEmail(authCode, authentication);
+
         Post post = postService.save("제목", "내용", "비밀게시판", true, authentication);
 
         mockMvc.perform(
@@ -199,10 +213,49 @@ class PostControllerTest {
                                         fieldWithPath("commentFindAllDtos[].content").type(JsonFieldType.STRING).description("댓글 내용").optional(),
                                         fieldWithPath("commentFindAllDtos[].nickname").type(JsonFieldType.STRING).description("댓글 작성자").optional(),
                                         fieldWithPath("commentFindAllDtos[].createTime").type(JsonFieldType.STRING).description("댓글 작성 시간").optional(),
-                                        fieldWithPath("deletable").type(JsonFieldType.BOOLEAN).description("삭제 여부")
+                                        fieldWithPath("deletable").type(JsonFieldType.BOOLEAN).description("삭제 여부"),
+                                        fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("공감 수")
                                 )
                         )
                 );
+    }
 
+    @Test
+    @DisplayName("게시글을 삭제가 정상 작동하면 200코드가 반환됩니다.")
+    void deleteById() throws Exception {
+        memberService.signup("cloudwi", "testPassword", "동글구름", "장주영", "동의대학교", 17);
+
+        String accessToken = memberService.login("cloudwi", "testPassword");
+        String thisAccessToken = jwtTokenProvider.bearerRemove(accessToken);
+        Authentication authentication = jwtTokenProvider.getAuthentication(thisAccessToken);
+
+        String authCode = emailService.sendEmail("cloudwi@naver.com", authentication);
+        memberService.checkEmail(authCode, authentication);
+
+        Post post = postService.save("제목", "내용", "비밀게시판", true, authentication);
+
+        PostDeleteRequestDto postDeleteRequestDto = new PostDeleteRequestDto(post.getId());
+
+        mockMvc.perform(
+                        delete("/api/v1/post")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .characterEncoding("UTF-8")
+                                .header("AccessToken", accessToken)
+                                .content(objectMapper.writeValueAsString(postDeleteRequestDto))
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document(
+                                "PostController/deleteById",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                requestHeaders(
+                                        headerWithName("AccessToken").description("토큰")
+                                ),
+                                requestFields(
+                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시글 아이디")
+                                )
+                        )
+                );
     }
 }

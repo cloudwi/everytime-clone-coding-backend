@@ -1,14 +1,19 @@
 package com.project.everytimeclonecodingbackend.domain.post.entity;
 
 import com.project.everytimeclonecodingbackend.domain.comment.entity.Comment;
+import com.project.everytimeclonecodingbackend.domain.like.entity.Likes;
 import com.project.everytimeclonecodingbackend.domain.member.entity.Member;
 import com.project.everytimeclonecodingbackend.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -33,35 +38,14 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
-    public Post() {
-    }
+    @OneToMany(mappedBy = "post")
+    private List<Likes> likes = new ArrayList<>();
 
     public Post(String title, String content, Category category, boolean anonymous) {
         this.title = title;
         this.content = content;
         this.category = category;
         this.anonymous = anonymous;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-
-    public long getId() {
-        return this.id;
-    }
-
-    public Member getMember() {
-        return this.member;
-    }
-
-    public Category getCategory() {
-        return category;
     }
 
     public List<Comment> getComments() {

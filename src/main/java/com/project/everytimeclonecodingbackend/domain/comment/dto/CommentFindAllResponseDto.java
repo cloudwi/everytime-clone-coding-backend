@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommentFindAllDto {
+public class CommentFindAllResponseDto {
     private long id;
     private String content;
     private String nickname;
     private LocalDateTime createTime;
+    private boolean deletable;
 }

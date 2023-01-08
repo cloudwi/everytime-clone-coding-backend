@@ -30,12 +30,27 @@ public class CommentService {
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         if (!member.isEmailAuthentication()) {
-            new CustomException(ErrorCode.NOT_CHECK_EMAIL);
+            throw new CustomException(ErrorCode.NOT_CHECK_EMAIL);
         }
 
         Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 
         Comment comment = new Comment(content, isAnonymous, member, post);
         return commentRepository.save(comment);
+    }
+
+    public boolean isDeletable(long id, Authentication authentication) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+
+        long memberId = ((Member) authentication.getPrincipal()).getId();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        if (!member.isEmailAuthentication()) {
+            throw new CustomException(ErrorCode.NOT_CHECK_EMAIL);
+        }
+
+        return comment.getMember().getId() == memberId;
     }
 }

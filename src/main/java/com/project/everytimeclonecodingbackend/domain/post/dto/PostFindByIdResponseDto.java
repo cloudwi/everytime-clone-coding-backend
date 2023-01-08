@@ -1,6 +1,6 @@
 package com.project.everytimeclonecodingbackend.domain.post.dto;
 
-import com.project.everytimeclonecodingbackend.domain.comment.dto.CommentFindAllDto;
+import com.project.everytimeclonecodingbackend.domain.comment.dto.CommentFindAllResponseDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +19,6 @@ public class PostFindByIdResponseDto {
     private String nickname;
     private LocalDateTime createTime;
     private boolean isDeletable;
-    private List<CommentFindAllDto> commentFindAllDtos;
+    private List<CommentFindAllResponseDto> commentFindAllDtos;
+    private int likeCount;
 }

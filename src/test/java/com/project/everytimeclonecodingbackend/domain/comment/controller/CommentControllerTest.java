@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.everytimeclonecodingbackend.domain.comment.dto.CommentSaveRequestDto;
 import com.project.everytimeclonecodingbackend.domain.member.entity.Member;
 import com.project.everytimeclonecodingbackend.domain.member.repository.MemberRepository;
+import com.project.everytimeclonecodingbackend.domain.member.service.EmailService;
 import com.project.everytimeclonecodingbackend.domain.member.service.MemberService;
 
 import com.project.everytimeclonecodingbackend.domain.post.entity.Post;
@@ -44,6 +45,8 @@ class CommentControllerTest {
     @Autowired
     private MemberService memberService;
     @Autowired
+    private EmailService emailService;
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private PostService postService;
@@ -66,6 +69,9 @@ class CommentControllerTest {
 
         String thisAccessToken = jwtTokenProvider.bearerRemove(accessToken);
         Authentication authentication = jwtTokenProvider.getAuthentication(thisAccessToken);
+
+        String authCode = emailService.sendEmail("cloudwi@naver.com", authentication);
+        memberService.checkEmail(authCode, authentication);
 
         Post post = postService.save("제목", "내용", "비밀게시판", true, authentication);
 

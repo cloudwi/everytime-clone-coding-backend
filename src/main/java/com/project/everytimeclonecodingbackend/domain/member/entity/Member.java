@@ -1,8 +1,11 @@
 package com.project.everytimeclonecodingbackend.domain.member.entity;
 
+import com.project.everytimeclonecodingbackend.domain.like.entity.Likes;
 import com.project.everytimeclonecodingbackend.domain.post.entity.Post;
 import com.project.everytimeclonecodingbackend.domain.comment.entity.Comment;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +16,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class Member implements UserDetails {
 
     @Id
@@ -46,8 +51,8 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
-    public Member() {
-    }
+    @OneToMany(mappedBy = "member")
+    private List<Likes> likes = new ArrayList<>();
 
     public Member(String userId, String password, String nickname, String name, String school, int admissionId) {
         this.userId = userId;
@@ -106,34 +111,6 @@ public class Member implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public int getAdmissionId() {
-        return admissionId;
-    }
-
-    public School getSchool() {
-        return school;
-    }
-
-    public boolean isEmailAuthentication() {
-        return emailAuthentication;
-    }
-
-    public String getEmailAuthenticationCode() {
-        return emailAuthenticationCode;
     }
 
     public void setEmailAuthenticationCode(String emailAuthenticationCode) {

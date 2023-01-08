@@ -101,9 +101,17 @@ include::{snippets}/PostController/findById/http-response.adoc[]
 === response field
 include::{snippets}/PostController/findById/response-fields.adoc[]
 
+[[Delete-게시글_삭제]]
+== Delete 게시글 삭제
+=== request
+include::{snippets}/PostController/deleteById/http-request.adoc[]
+=== request field
+include::{snippets}/PostController/deleteById/request-headers.adoc[]
+=== response
+include::{snippets}/PostController/deleteById/http-response.adoc[]
+
 [[댓글-API]]
 = 댓글 API
-
 
 [[Post-댓글_생성]]
 == Post 댓글 생성
@@ -117,3 +125,18 @@ include::{snippets}/CommentController/save/request-fields.adoc[]
 include::{snippets}/CommentController/save/http-response.adoc[]
 === response field
 include::{snippets}/CommentController/save/response-fields.adoc[]
+
+[[공감-API]]
+= 공감 API
+
+[[Post-공감_생성]]
+=== request
+include::{snippets}/LikeController/save/http-request.adoc[]
+=== request headers
+include::{snippets}/LikeController/save/request-headers.adoc[]
+=== request field
+include::{snippets}/LikeController/save/request-fields.adoc[]
+=== response
+include::{snippets}/LikeController/save/http-response.adoc[]
+=== response field
+include::{snippets}/LikeController/save/response-fields.adoc[]
