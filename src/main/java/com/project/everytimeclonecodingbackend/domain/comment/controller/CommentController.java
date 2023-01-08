@@ -22,7 +22,7 @@ public class CommentController {
     }
 
     @PostMapping()
-    public ResponseEntity save(@RequestBody CommentSaveRequestDto commentSaveRequestDto, Authentication authentication) {
+    public ResponseEntity<CommentSaveResponseDto> save(@RequestBody CommentSaveRequestDto commentSaveRequestDto, Authentication authentication) {
         Comment comment = commentService.save(
                 commentSaveRequestDto.getContent(),
                 commentSaveRequestDto.isAnonymous(),
@@ -31,15 +31,14 @@ public class CommentController {
         );
 
         CommentSaveResponseDto commentSaveResponseDto = new CommentSaveResponseDto(
-                comment.getId()
+                comment.getId(),
+                comment.getContent(),
+                comment.getPost().getId(),
+                comment.getCreateTime(),
+                comment.isAnonymous() ? "익명" : comment.getMember().getNickname()
         );
 
         return ResponseEntity.ok(commentSaveResponseDto);
-    }
-
-    @GetMapping("/{postId}")
-    public List<CommentFindByPostResponseDto> findByPost(@RequestParam("postId") long postId) {
-        return null;
     }
 }
 

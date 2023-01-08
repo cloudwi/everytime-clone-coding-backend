@@ -1,7 +1,6 @@
 package com.project.everytimeclonecodingbackend.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 import com.project.everytimeclonecodingbackend.domain.comment.entity.Comment;
 import com.project.everytimeclonecodingbackend.domain.comment.service.CommentService;
 import com.project.everytimeclonecodingbackend.domain.member.entity.Member;
