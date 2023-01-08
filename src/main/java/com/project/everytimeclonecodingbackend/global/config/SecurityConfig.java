@@ -1,5 +1,6 @@
 package com.project.everytimeclonecodingbackend.global.config;
 
+import com.project.everytimeclonecodingbackend.global.security.EmailFilter;
 import com.project.everytimeclonecodingbackend.global.security.JwtAuthenticationFilter;
 import com.project.everytimeclonecodingbackend.global.security.JwtTokenProvider;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -56,7 +57,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.POST, "/api/v1/member/signup").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/member/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/member/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

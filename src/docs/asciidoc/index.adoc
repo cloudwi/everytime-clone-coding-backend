@@ -87,3 +87,16 @@ include::{snippets}/PostController/findAllByCategory/request-headers.adoc[]
 include::{snippets}/PostController/findAllByCategory/http-response.adoc[]
 === response field
 include::{snippets}/PostController/findAllByCategory/response-fields.adoc[]
+
+[[Post-게시판_상세_조회]]
+== Get 게시판 상세 조회
+=== request
+include::{snippets}/PostController/findById/http-request.adoc[]
+=== request path parameters
+include::{snippets}/PostController/findById/path-parameters.adoc[]
+=== request field
+include::{snippets}/PostController/findById/request-headers.adoc[]
+=== response
+include::{snippets}/PostController/findById/http-response.adoc[]
+=== response field
+include::{snippets}/PostController/findById/response-fields.adoc[]
